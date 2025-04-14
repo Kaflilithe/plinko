@@ -14,7 +14,7 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
 			const game = createGame(elRef.current);
 			return () => game.destroy(true);
 		}
-	}, [elRef])
+	}, [elRef]);
 
 	return <div ref={elRef} {...rest} />
 }

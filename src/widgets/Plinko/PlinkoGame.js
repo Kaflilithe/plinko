@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
+import { EventBus, PlinkoEvent } from './EventBus';
 
 
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
-const PEG_ROWS = 11;
+const PEG_ROWS = 13;
 const PEG_SPACING_X = 28;
 const PEG_SPACING_Y = 35;
 const PEG_RADIUS = 5;
@@ -49,13 +50,12 @@ class PlinkoScene extends Phaser.Scene {
 		const groundBody = this.matter.bodies.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, { isStatic: true });
 		this.matter.add.gameObject(ground, groundBody);
 
-		// Drop balls on click
-		this.input.on('pointerdown', () => {
-			this.spawnBall(GAME_WIDTH / 2, 20);
-		});
+		EventBus.on(PlinkoEvent.KICK_BALL, () => {
+			this.spawnBall();
+		})
 	}
 
-	spawnBall(x, y) {
+	spawnBall(x = GAME_WIDTH / 2, y = 20) {
 		const ball = this.add.circle(x, y, BALL_RADIUS, 0x3498eb);
 		const ballBody = this.matter.bodies.circle(x, y, BALL_RADIUS, {
 			restitution: 0.2,
@@ -73,12 +73,12 @@ export const createGame = (parent) => {
 		type: Phaser.AUTO,
 		width: GAME_WIDTH,
 		height: GAME_HEIGHT,
-		backgroundColor: '#1a1a1a',
+		transparent: true,
 		physics: {
 			default: 'matter',
 			matter: {
 				gravity: { y: 0.9 },
-				debug: true
+				debug: false
 			}
 		},
 		scale: {
