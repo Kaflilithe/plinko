@@ -53,8 +53,6 @@ class PlinkoScene extends Phaser.Scene {
 		this.input.on('pointerdown', () => {
 			this.spawnBall(GAME_WIDTH / 2, 20);
 		});
-
-		this.time.addEvent({ delay: 500, repeat: -1, callback: () => this.spawnBall(GAME_WIDTH / 2, 20) });
 	}
 
 	spawnBall(x, y) {

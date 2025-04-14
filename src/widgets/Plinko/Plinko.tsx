@@ -11,7 +11,8 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
 
 	useEffect(() => {
 		if (elRef.current) {
-			createGame(elRef.current);
+			const game = createGame(elRef.current);
+			return () => game.destroy(true);
 		}
 	}, [elRef])
 
