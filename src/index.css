@@ -91,3 +91,48 @@ button:focus-visible {
   animation: squishBounce 0.8s ease-out;
   transform-origin: center bottom;
 }
+main{
+   background: linear-gradient(#3960d5, #0b1539);
+}
+.wallet{
+  background: radial-gradient(#ffde09, #ff9202);
+      max-width: 250px;
+    width: 100%;
+    border-radius: 30px;
+    color: #000;
+    font-weight: bold;
+    padding: 4px;
+    text-align: center;
+}
+.box{
+  font-size: 10px;
+}
+@media (max-width: 500px){
+  .box{
+  font-size: 7px;
+}
+}
+@media (max-width: 500px) and (orientation: landscape) { 
+ .box{
+  font-size: 4px;
+  height: 9px;
+}
+.bottom-2 {
+    bottom: calc(var(--spacing)* 1);
+}
+}
+@media (max-width: 700px) and (orientation: landscape) { 
+.button-play{
+width: 80px;
+height: 80px;
+}
+
+}
+.button-play{
+   background: radial-gradient(#3960d5, #0b1539);
+   border:1px solid #416df1 ;
+   color: #ffde09;
+   font-size: 28px;
+   font-weight: bold;
+}
+

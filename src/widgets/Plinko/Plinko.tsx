@@ -4,7 +4,7 @@ import { EventBus, PlinkoEvent } from './EventBus';
 import { createGame } from './PlinkoGame';
 
 const gates = [
-	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+	100, 30, 20, 10, 2, 2, 10, 20, 30, 100
 ]
 
 
@@ -61,23 +61,30 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
 					style={{ width: `${canvasW}px`, left: '50%', transform: 'translateX(-50%)' }}
 					className='absolute w-full grid grid-cols-10 gap-0.5 bottom-2 z-50'
 				>
-					{gates.map(gate => (
+					{gates.map((gate,index) => (
 						<div
-							key={gate}
-							className={clsx('h-[20px] flex justify-center bg-amber-200 text-black', {
-								'bounce-hit': goals.has(gate)
+							key={index}
+							className={clsx('h-[20px] flex justify-center bg-amber-200 text-black font-bold  rounded-xs items-center box', {
+								'bounce-hit': goals.has(index),
+								'bg-red-600': gate === 100,
+								'bg-orange-500': gate === 30,
+								'bg-amber-300': gate === 20,
+								'bg-yellow-300': gate === 10,
+								'bg-lime-300': gate === 2,
 							})}
-							onAnimationEnd={() => removeGoal(gate)}
+							onAnimationEnd={() => removeGoal(index)}
 						>
-							{gate}
+							{gate}x
 						</div>
 					))}
 				</div>
 			</div>
 
 			<div className='flex-1 flex flex-col'>
-				<div className='flex-1 flex items-center justify-center'>
-					<button className='w-[140px] h-[140px] rounded-full' onClick={kickBall}>btn</button>
+				<div className='flex-1 flex items-center justify-around
+ flex-col'>
+					<div className='wallet'>10$</div>
+					<button className='w-[140px] h-[140px] rounded-full button-play' onClick={kickBall}>PLAY</button>
 				</div>
 			</div>
 		</>

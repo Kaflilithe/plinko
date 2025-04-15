@@ -46,7 +46,7 @@ class PlinkoScene extends Phaser.Scene {
 		}
 
 		// Ground
-		const ground = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, 0x888888);
+		const ground = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, 0x888800);
 		const groundBody = this.matter.bodies.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, {
 			isStatic: true,
 			label: 'ground'
@@ -61,7 +61,7 @@ class PlinkoScene extends Phaser.Scene {
 	}
 
 	spawnBall(x = GAME_WIDTH / 2, y = 20) {
-		const ball = this.add.circle(x, y, BALL_RADIUS, 0x3498eb);
+		const ball = this.add.circle(x, y, BALL_RADIUS, 0xffe011);
 		const ballBody = this.matter.bodies.circle(x, y, BALL_RADIUS, {
 			restitution: 0.2,
 			friction: 0.2,
