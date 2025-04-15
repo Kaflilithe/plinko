@@ -1,8 +1,8 @@
 import { FC, PropsWithChildren } from "react";
-import { ContextProps, GeoContext } from "./GeoContext";
+import { GeoState, GeoContext } from "./GeoContext";
 
 interface Props {
-  geo: ContextProps;
+  geo: GeoState;
 }
 
 export const GeoProvider: FC<PropsWithChildren<Props>> = ({

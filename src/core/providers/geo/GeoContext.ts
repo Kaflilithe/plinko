@@ -1,11 +1,13 @@
 import { createContext } from "react";
+import { GeoList } from "./GeoList";
 
-export interface ContextProps {
-  geoCode: string;
+export interface GeoState {
+  country: string;
+  emoji: string;
+  language: string;
   price: number;
+  currency: string;
+  logo: string;
 }
 
-export const GeoContext = createContext<ContextProps>({
-  geoCode: "kz",
-  price: 4_500_000,
-});
+export const GeoContext = createContext<GeoState>(GeoList[0]);
