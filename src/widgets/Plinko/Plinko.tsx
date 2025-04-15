@@ -7,9 +7,12 @@ import { useGeo } from "@/core/providers/geo/GeoHooks";
 
 const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
 
-type Props = HTMLAttributes<HTMLDivElement>;
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  // Юзер получил приз
+  onFinish: () => void;
+}
 
-export const Plinko: FC<Props> = ({ ...rest }) => {
+export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
   const elRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [goals, setGoals] = useState(new Set<number>());
@@ -26,7 +29,6 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
       if (canvas instanceof HTMLCanvasElement) {
         canvasRef.current = canvas;
         setCanvasW(canvas.scrollWidth);
-        console.log(canvas.scrollWidth);
       }
       return () => game.destroy(true);
     }
