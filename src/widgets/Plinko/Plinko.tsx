@@ -15,6 +15,7 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
   const [goals, setGoals] = useState(new Set<number>());
   const [canvasW, setCanvasW] = useState(0);
 
+  const [actionCount, setActionCount] = useState(5);
   const geo = useGeo();
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
 
   const kickBall = () => {
     EventBus.emit(PlinkoEvent.KICK_BALL);
+    setActionCount((count) => count - 1);
   };
 
   return (
@@ -89,10 +91,16 @@ export const Plinko: FC<Props> = ({ ...rest }) => {
         <div className="flex-1 flex items-center justify-around flex-col">
           <div className="wallet">10$</div>
           <button
-            className="w-[140px] h-[140px] rounded-full button-play"
+            className="w-[140px] h-[140px] rounded-full button-play uppercase"
+            disabled={actionCount === 0}
             onClick={kickBall}
           >
-            PLAY {geo.emoji}
+            <span className="flex flex-col items-center">
+              <div className="inline-flex items-center">{geo.play}</div>
+              <div className="inline-flex items-center text-2xl font-bold">
+                {actionCount}
+              </div>
+            </span>
           </button>
         </div>
       </div>

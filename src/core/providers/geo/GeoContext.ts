@@ -8,6 +8,7 @@ export interface GeoState {
   price: number;
   currency: string;
   logo: string;
+  play: string;
 }
 
 export const GeoContext = createContext<GeoState>(GeoList[0]);

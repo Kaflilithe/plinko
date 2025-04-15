@@ -8,6 +8,7 @@ export const GeoList: GeoState[] = [
     price: 1_800_000,
     currency: "₸",
     logo: "",
+    play: "ойнау", // Kazakh for "play"
   },
   {
     country: "Poland",
@@ -16,6 +17,7 @@ export const GeoList: GeoState[] = [
     price: 15_000,
     currency: "zł",
     logo: "",
+    play: "grać", // Polish for "play"
   },
   {
     country: "Italy",
@@ -24,6 +26,7 @@ export const GeoList: GeoState[] = [
     price: 3_150,
     currency: "€",
     logo: "",
+    play: "giocare", // Italian for "play"
   },
   {
     country: "Germany",
@@ -32,6 +35,7 @@ export const GeoList: GeoState[] = [
     price: 3_150,
     currency: "€",
     logo: "",
+    play: "spielen", // German for "play"
   },
   {
     country: "Turkey",
@@ -40,5 +44,6 @@ export const GeoList: GeoState[] = [
     price: 150_000,
     currency: "₺",
     logo: "",
+    play: "oynamak", // Turkish for "play"
   },
 ];
