@@ -5,7 +5,8 @@ export const GeoList: GeoState[] = [
     country: "Kazakhstan",
     emoji: "🇰🇿",
     language: "Kazakh",
-    price: 1_800_000,
+    price: 10000,
+    winnings: 1_800_000,
     currency: "₸",
     logo: "",
     play: "ойнау", // Kazakh for "play"
@@ -14,7 +15,8 @@ export const GeoList: GeoState[] = [
     country: "Poland",
     emoji: "🇵🇱",
     language: "Polish",
-    price: 15_000,
+    price: 150,
+    winnings: 15_000,
     currency: "zł",
     logo: "",
     play: "grać", // Polish for "play"
@@ -23,7 +25,8 @@ export const GeoList: GeoState[] = [
     country: "Italy",
     emoji: "🇮🇹",
     language: "Italian",
-    price: 3_150,
+    price: 10,
+    winnings: 3_150,
     currency: "€",
     logo: "",
     play: "giocare", // Italian for "play"
@@ -32,7 +35,8 @@ export const GeoList: GeoState[] = [
     country: "Germany",
     emoji: "🇩🇪",
     language: "German",
-    price: 3_150,
+    price: 10,
+    winnings: 3_150,
     currency: "€",
     logo: "",
     play: "spielen", // German for "play"
@@ -41,7 +45,8 @@ export const GeoList: GeoState[] = [
     country: "Turkey",
     emoji: "🇹🇷",
     language: "Turkish",
-    price: 150_000,
+    price: 1500,
+    winnings: 150_000,
     currency: "₺",
     logo: "",
     play: "oynamak", // Turkish for "play"

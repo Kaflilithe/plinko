@@ -91,7 +91,7 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
 
       <div className="flex-1 flex flex-col">
         <div className="flex-1 flex items-center justify-around flex-col">
-          <div className="wallet">10$</div>
+          <div className="wallet">{geo.price}{geo.currency}</div>
           <button
             className="w-[140px] h-[140px] rounded-full button-play uppercase"
             disabled={actionCount === 0}
