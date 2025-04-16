@@ -19,6 +19,7 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
   const [canvasW, setCanvasW] = useState(0);
 
   const [actionCount, setActionCount] = useState(5);
+  const [prizeCount, setPrizeCount] = useState(5);
   const geo = useGeo();
 
   useEffect(() => {
@@ -39,8 +40,16 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
       setGoals((set) => {
         return new Set(set.add(gateIndex));
       });
+      setPrizeCount((count) => count - 1);
     });
   }, []);
+
+  useEffect(() => {
+    console.log(prizeCount);
+    if (prizeCount === 0) {
+      onFinish();
+    }
+  }, [prizeCount, onFinish]);
 
   const removeGoal = (gate: number) => {
     setGoals((set) => {
@@ -91,7 +100,10 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
 
       <div className="flex-1 flex flex-col">
         <div className="flex-1 flex items-center justify-around flex-col">
-          <div className="wallet">{geo.price}{geo.currency}</div>
+          <div className="wallet">
+            {geo.price}
+            {geo.currency}
+          </div>
           <button
             className="w-[140px] h-[140px] rounded-full button-play uppercase"
             disabled={actionCount === 0}

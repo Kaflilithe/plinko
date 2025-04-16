@@ -67,7 +67,7 @@ export function Final() {
   return (
     <Drawer open shouldScaleBackground>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+        <div className="mx-auto w-full max-w-sm h-[90vh]">
           <DrawerHeader>
             <DrawerTitle>Move Goal</DrawerTitle>
             <DrawerDescription>Set your daily activity goal.</DrawerDescription>
