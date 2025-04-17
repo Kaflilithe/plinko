@@ -1,7 +1,33 @@
 import { useGeo } from "@/core/providers/geo/GeoHooks";
-import { FC, HTMLAttributes } from "react";
+import { FC, HTMLAttributes, useEffect } from "react";
+import { toast } from "sonner";
 
-export const Notification: FC<HTMLAttributes<HTMLElement>> = ({ ...rest }) => {
+interface Props {
+  onFinish: () => void;
+}
+
+export const Notification: FC<Props> = ({ onFinish }) => {
+  useEffect(() => {
+    toast.custom(
+      (id) => (
+        <Template
+          onClick={() => {
+            toast.dismiss(id);
+            onFinish();
+          }}
+        />
+      ),
+      {
+        duration: Infinity,
+        position: "top-center",
+      },
+    );
+  }, []);
+
+  return null;
+};
+
+const Template: FC<HTMLAttributes<HTMLDivElement>> = ({ ...rest }) => {
   const geo = useGeo();
 
   return (

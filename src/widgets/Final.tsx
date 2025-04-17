@@ -57,7 +57,7 @@ const data = [
   },
 ];
 
-export function Final() {
+export function FinalBank() {
   const [goal, setGoal] = React.useState(350);
 
   function onClick(adjustment: number) {

@@ -1,11 +1,19 @@
 import clsx from "clsx";
-import { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
+import {
+  FC,
+  HTMLAttributes,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { EventBus, PlinkoEvent } from "./EventBus";
 // @ts-ignore
 import { createGame } from "./PlinkoGame";
 import { useGeo } from "@/core/providers/geo/GeoHooks";
-import { Game } from 'phaser';
-import { Wallet } from '@/components/ui/wallet';
+import { Game } from "phaser";
+import { Wallet } from "@/components/ui/wallet";
+import { Notification } from "../Notification";
 
 const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
 
@@ -14,9 +22,9 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   onFinish: () => void;
 }
 
-export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
+export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   const elRef = useRef<HTMLDivElement>(null);
-  const gameRef = useRef<Game>(null)
+  const gameRef = useRef<Game>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [goals, setGoals] = useState(new Set<number>());
@@ -24,6 +32,8 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
 
   const [actionCount, setActionCount] = useState(5);
   const [prizeCount, setPrizeCount] = useState(5);
+
+  const finished = useMemo(() => prizeCount === 0, [prizeCount]);
 
   const geo = useGeo();
 
@@ -42,14 +52,14 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
   }, [elRef]);
 
   useEffect(() => {
-    const onResize = () => {       
+    const onResize = () => {
       gameRef.current?.scale.refresh();
-      setCanvasW(canvasRef.current?.scrollWidth|| 0)
-     }
-    window.addEventListener('resize', onResize);
+      setCanvasW(canvasRef.current?.scrollWidth || 0);
+    };
+    window.addEventListener("resize", onResize);
 
-    return () => window.removeEventListener('resize', onResize)
-  }, [gameRef])
+    return () => window.removeEventListener("resize", onResize);
+  }, [gameRef]);
 
   useEffect(() => {
     EventBus.on(PlinkoEvent.GOAL, (gateIndex: number) => {
@@ -59,12 +69,6 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
       setPrizeCount((count) => count - 1);
     });
   }, []);
-
-  useEffect(() => {
-    if (prizeCount === 0) {
-      onFinish();
-    }
-  }, [prizeCount, onFinish]);
 
   const removeGoal = (gate: number) => {
     setGoals((set) => {
@@ -115,9 +119,8 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
 
       <div className="flex-1 flex flex-col">
         <div className="flex-1 flex items-center justify-around flex-col">
-        
           <Wallet newPrice={geo.price} currency={geo.currency}></Wallet>
-          
+
           <button
             className="w-[140px] h-[140px] rounded-full button-play uppercase"
             disabled={actionCount === 0}
@@ -132,6 +135,8 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
           </button>
         </div>
       </div>
+
+      {finished && <Notification onFinish={onFinish} />}
     </>
   );
 };
