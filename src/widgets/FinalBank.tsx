@@ -12,7 +12,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 
 const data = [
@@ -67,7 +66,7 @@ export function FinalBank() {
   return (
     <Drawer open shouldScaleBackground>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm h-[90vh]">
+        <div className="mx-auto w-full max-w-sm h-[100vh]">
           <DrawerHeader>
             <DrawerTitle>Move Goal</DrawerTitle>
             <DrawerDescription>Set your daily activity goal.</DrawerDescription>

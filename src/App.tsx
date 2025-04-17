@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { GeoList } from "./core/providers/geo/GeoList";
 import { PlinkoGame } from "./widgets/Plinko/Plinko";
 import { GeoSelector } from "./widgets/GeoSelector";
 import { GeoState } from "./core/providers/geo/GeoContext";
 import { GeoProvider } from "./core/providers/geo/GeoProvider";
-import { FinalBank } from "./widgets/Final";
+import { FinalBank } from "./widgets/FinalBank";
 import { Toaster } from "./components/ui/sonner";
 import { Preloader } from "./widgets/Preloader";
 

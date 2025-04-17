@@ -43,6 +43,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
   const [buttonBg, setButtonBg] = useState(playButton);
   const [price, setPrice] = useState(geo.price);
+  const [disabled, setDisabled] = useState(false);
 
   const finished = useMemo(() => prizeCount === 0, [prizeCount]);
 
@@ -94,7 +95,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
         direction: "alternate",
       });
     }, 10);
-  }, [!finished]);
+  }, [finished]);
 
   useEffect(() => {
     EventBus.on(PlinkoEvent.GOAL, (gateIndex: number) => {
@@ -119,6 +120,11 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
     setTimeout(() => {
       setButtonBg(playButton);
     }, 60);
+
+    setDisabled(true);
+    setTimeout(() => {
+      setDisabled(false);
+    }, 1000);
 
     // Уменьшаем выигрышь на 20%
     setPrice((price) => {
@@ -175,7 +181,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
           <button
             className="relative scale-120 w-[140px] h-[140px] button-play transition-all active:scale-110 text-amber-500 active:text-amber-600 hover:scale-110"
-            disabled={actionCount === 0}
+            disabled={disabled || actionCount === 0}
             onClick={kickBall}
           >
             <img

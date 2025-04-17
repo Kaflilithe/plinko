@@ -20,10 +20,35 @@ const BALL_RADIUS = 8;
 const GATE_COUNT = 10;
 const GATE_WIDTH = GAME_WIDTH / GATE_COUNT;
 
+// Категории
+const BALL_CATEGORY = 0x0001; // Категория для мячиков
+const PEG_CATEGORY = 0x0002; // Категория для колышков
+const GATE_CATEGORY = 0x0003; // Категория для ворот
+
+const Balls = {
+  BALL_1: 0,
+  BALL_2: 1,
+  BALL_3: 2,
+  BALL_4: 3,
+  BALL_5: 4,
+};
+
+// Сопоставление мячика по индексу
+// с воротами, куда он упадет в конце
+const BallToGate = {
+  [Balls.BALL_1]: 2,
+  [Balls.BALL_2]: 9,
+  [Balls.BALL_3]: 4,
+  [Balls.BALL_4]: 6,
+  [Balls.BALL_5]: 7,
+};
+
 class PlinkoScene extends Phaser.Scene {
   constructor() {
     super("plinko");
   }
+
+  ballIndex = 0;
 
   preload() {
     // Audio
@@ -56,6 +81,10 @@ class PlinkoScene extends Phaser.Scene {
           isStatic: true,
           restitution: 0.5,
           label: "peg",
+          collisionFilter: {
+            category: PEG_CATEGORY, // Колышки в категории 0x0002
+            mask: BALL_CATEGORY, // Сталкиваются только с мячиками (0x0001)
+          },
         });
         this.matter.add.gameObject(peg, pegBody);
       }
@@ -64,8 +93,8 @@ class PlinkoScene extends Phaser.Scene {
     // Create gates at the bottom
     for (let i = 0; i <= GATE_COUNT; i++) {
       const x = i * GATE_WIDTH;
-      const rect = this.add.rectangle(x, GAME_HEIGHT - 25, 1, 50);
-      const body = this.matter.bodies.rectangle(x, GAME_HEIGHT - 25, 1, 50, {
+      const rect = this.add.rectangle(x, GAME_HEIGHT - 25, 1, 25);
+      const body = this.matter.bodies.rectangle(x, GAME_HEIGHT - 25, 1, 25, {
         isStatic: true,
       });
       this.matter.add.gameObject(rect, body);
@@ -86,6 +115,10 @@ class PlinkoScene extends Phaser.Scene {
       {
         isStatic: true,
         label: "ground",
+        collisionFilter: {
+          category: GATE_CATEGORY,
+          mask: BALL_CATEGORY, // Сталкиваются только с мячиками (0x0001)
+        },
       },
     );
     this.matter.add.gameObject(ground, groundBody);
@@ -105,8 +138,15 @@ class PlinkoScene extends Phaser.Scene {
       friction: 0.2,
       frictionStatic: 0,
       frictionAir: 0.001,
-      slop: 0.001,
+      slop: 0,
       label: "ball",
+      plugin: {
+        ballIndex: this.ballIndex++,
+      },
+      collisionFilter: {
+        category: BALL_CATEGORY, // Мячики в категории 0x0001
+        mask: PEG_CATEGORY, // Сталкиваются только с колышками (0x0002)
+      },
     });
     this.matter.add.gameObject(ball, ballBody);
     this.sound.play("buttonClick", { volume: 3 });
@@ -129,8 +169,23 @@ class PlinkoScene extends Phaser.Scene {
           delay: 50,
           callback: () => light.destroy(),
         });
+
+        const ballIndex = ball.plugin.ballIndex;
+        const gateIndex = BallToGate[ballIndex];
+        this.pushBallToGate(ball, gateIndex);
       });
     });
+  }
+
+  pushBallToGate(ball, gateIndex) {
+    const gateX = this.getGateX(gateIndex);
+    const ballX = ball.position.x;
+
+    if (gateX < ballX) {
+      this.matter.setVelocity(ball, -1, -0.8);
+    } else {
+      this.matter.setVelocity(ball, 1, -0.8);
+    }
   }
 
   getGateIndex(x) {
@@ -140,6 +195,10 @@ class PlinkoScene extends Phaser.Scene {
       0,
       Math.floor(GAME_WIDTH / GATE_WIDTH) - 1,
     );
+  }
+
+  getGateX(gateIndex) {
+    return GATE_WIDTH * gateIndex + GATE_WIDTH / 2;
   }
 }
 
