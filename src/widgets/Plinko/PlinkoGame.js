@@ -1,9 +1,14 @@
 import Phaser from "phaser";
 import { EventBus, PlinkoEvent } from "./EventBus";
+// Audio
 import bgAudio from "../../assets/bg.ogg";
 import ballKick from "../../assets/ballKick.ogg";
 import cell from "../../assets/cell.ogg";
 import buttonClick from "../../assets/buttonClick.ogg";
+// Sprites
+import pin from "../../assets/pin.png";
+import pinLight from "../../assets/pin-light.png";
+import ball from "../../assets/ball.png";
 
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
@@ -21,10 +26,15 @@ class PlinkoScene extends Phaser.Scene {
   }
 
   preload() {
+    // Audio
     this.load.audio("bgAudio", bgAudio);
     this.load.audio("ballKick", ballKick);
     this.load.audio("cell", cell);
     this.load.audio("buttonClick", buttonClick);
+    // Sprite
+    this.load.image("pin", pin);
+    this.load.image("pinLight", pinLight);
+    this.load.image("ball", ball);
   }
 
   create() {
@@ -41,7 +51,7 @@ class PlinkoScene extends Phaser.Scene {
           col * PEG_SPACING_X;
         const y = 140 + row * PEG_SPACING_Y;
 
-        const peg = this.add.circle(x, y, PEG_RADIUS, 0xffffff);
+        const peg = this.add.sprite(x, y, "pin");
         const pegBody = this.matter.bodies.circle(x, y, PEG_RADIUS, {
           isStatic: true,
           restitution: 0.5,
@@ -89,6 +99,7 @@ class PlinkoScene extends Phaser.Scene {
 
   spawnBall(x = GAME_WIDTH / 2, y = 20) {
     const ball = this.add.circle(x, y, BALL_RADIUS, 0xffe011);
+    ball.setStrokeStyle(1, 0xc2aa0e);
     const ballBody = this.matter.bodies.circle(x, y, BALL_RADIUS, {
       restitution: 0.2,
       friction: 0.2,
@@ -110,8 +121,14 @@ class PlinkoScene extends Phaser.Scene {
         this.sound.play("cell", { volume: 3 });
       });
 
-      checkCollision(event, "peg", "ball", (_ground, ball) => {
+      checkCollision(event, "peg", "ball", (peg, ball) => {
         this.sound.play("ballKick");
+        const { x, y } = peg.position;
+        const light = this.add.image(x, y, "pinLight");
+        this.time.addEvent({
+          delay: 50,
+          callback: () => light.destroy(),
+        });
       });
     });
   }

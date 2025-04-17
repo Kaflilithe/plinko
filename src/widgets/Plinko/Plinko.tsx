@@ -29,6 +29,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
   const [goals, setGoals] = useState(new Set<number>());
   const [canvasW, setCanvasW] = useState(0);
+  const [gatesPos, setGatesPos] = useState(0);
 
   const [actionCount, setActionCount] = useState(5);
   const [prizeCount, setPrizeCount] = useState(5);
@@ -46,6 +47,10 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
       if (canvas instanceof HTMLCanvasElement) {
         canvasRef.current = canvas;
         setCanvasW(canvas.scrollWidth);
+
+        const rect = canvas.getBoundingClientRect();
+        const bottomY = rect.bottom;
+        setGatesPos(bottomY);
       }
       return () => game.destroy(true);
     }
@@ -53,8 +58,13 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
   useEffect(() => {
     const onResize = () => {
-      gameRef.current?.scale.refresh();
-      setCanvasW(canvasRef.current?.scrollWidth || 0);
+      queueMicrotask(() => {
+        gameRef.current?.scale.refresh();
+        setCanvasW(canvasRef.current?.scrollWidth || 0);
+        const rect = canvasRef.current?.getBoundingClientRect();
+        const bottomY = rect?.bottom;
+        setGatesPos(bottomY || 0);
+      });
     };
     window.addEventListener("resize", onResize);
 
@@ -84,16 +94,18 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
   return (
     <>
-      <div className="h-[70vh] relative game">
+      <div className="h-[50vh] relative game">
         <div className="w-full h-full" ref={elRef} {...rest} />
 
         <div
           style={{
             width: `${canvasW}px`,
+            top: `${gatesPos}px`,
             left: "50%",
-            transform: "translateX(-50%)",
+            height: "max-content",
+            transform: "translateX(-50%) translateY(-100%)",
           }}
-          className="absolute w-full grid grid-cols-10 gap-0.5 bottom-2 z-50"
+          className="absolute w-full grid grid-cols-10 gap-0.5 bottom-2 z-50 px-1"
         >
           {gates.map((gate, index) => (
             <div

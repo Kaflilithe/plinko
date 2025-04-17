@@ -31,7 +31,10 @@ const Template: FC<HTMLAttributes<HTMLDivElement>> = ({ ...rest }) => {
   const geo = useGeo();
 
   return (
-    <div {...rest} className="w-full flex-1 bg-card p-4 rounded notification">
+    <div
+      {...rest}
+      className="w-full flex-1 bg-card p-4 rounded notification select-none"
+    >
       <img src="" alt="" />
 
       <div>

@@ -6,10 +6,9 @@ import { GeoState } from "./core/providers/geo/GeoContext";
 import { GeoProvider } from "./core/providers/geo/GeoProvider";
 import { FinalBank } from "./widgets/Final";
 import { Toaster } from "./components/ui/sonner";
-import { toast } from "sonner";
-import { Notification } from "./widgets/Notification";
 import { Preloader } from "./widgets/Preloader";
 
+// Todo: переместить лоадер в игру
 enum WidgetState {
   GEO,
   LOAD,
