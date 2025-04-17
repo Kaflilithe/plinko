@@ -17,6 +17,8 @@ import { Notification } from "../Notification";
 import playButton from "../../assets/play-btn.png";
 import playButtonH from "../../assets/play-btn-h.png";
 import logo from "../../assets/logo.png";
+import hand from "../../assets/hand.png";
+import anime from "animejs";
 
 const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
 
@@ -81,6 +83,20 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   }, [gameRef]);
 
   useEffect(() => {
+    setTimeout(() => {
+      anime({
+        targets: ".finish-pointer",
+        translateY: [-3, 3],
+        translateX: [-3, 3],
+        loop: true,
+        easing: "linear",
+        duration: 600,
+        direction: "alternate",
+      });
+    }, 10);
+  }, [!finished]);
+
+  useEffect(() => {
     EventBus.on(PlinkoEvent.GOAL, (gateIndex: number) => {
       setGoals((set) => {
         return new Set(set.add(gateIndex));
@@ -112,7 +128,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
   return (
     <>
-      <div className="h-[60vh] relative game">
+      <div className={clsx("h-[60vh] relative game", { "blur-sm": finished })}>
         <div className="w-full h-full" ref={elRef} {...rest} />
 
         <div
@@ -147,7 +163,11 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col gap-2 pb-8">
+      <div
+        className={clsx("flex-1 flex flex-col gap-2 pb-8", {
+          "blur-sm": finished,
+        })}
+      >
         <div className="flex-1 flex items-center justify-around flex-col">
           <div className="max-w-[200px]">
             <img src={logo} alt="" />
@@ -177,6 +197,12 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
           <Wallet price={price} currency={geo.currency}></Wallet>
         </div>
       </div>
+
+      {finished && (
+        <div className="absolute top-[140px] left-[50%] translateX-[-50%]">
+          <img className="finish-pointer" src={hand} alt="" />
+        </div>
+      )}
 
       {finished && <Notification onFinish={onFinish} />}
     </>
