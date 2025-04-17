@@ -46,7 +46,7 @@ class PlinkoScene extends Phaser.Scene {
 		}
 
 		// Ground
-		const ground = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, 0x888800);
+		const ground = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, 0x0d173e);
 		const groundBody = this.matter.bodies.rectangle(GAME_WIDTH / 2, GAME_HEIGHT - 5, GAME_WIDTH, 10, {
 			isStatic: true,
 			label: 'ground'

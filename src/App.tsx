@@ -19,8 +19,9 @@ function App() {
     setGeo(geo);
   };
 
+
+
   const finishGame = useCallback(() => {
-    console.log("finish game!");
     toast.custom(
       (id) => (
         <Notification
@@ -32,6 +33,7 @@ function App() {
       ),
       {
         duration: Infinity,
+        position: 'top-center'
       },
     );
   }, []);

@@ -4,6 +4,7 @@ import { EventBus, PlinkoEvent } from "./EventBus";
 // @ts-ignore
 import { createGame } from "./PlinkoGame";
 import { useGeo } from "@/core/providers/geo/GeoHooks";
+import { Game } from 'phaser';
 
 const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
 
@@ -14,18 +15,22 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
   const elRef = useRef<HTMLDivElement>(null);
+  const gameRef = useRef<Game>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [goals, setGoals] = useState(new Set<number>());
   const [canvasW, setCanvasW] = useState(0);
 
   const [actionCount, setActionCount] = useState(5);
   const [prizeCount, setPrizeCount] = useState(5);
+
   const geo = useGeo();
 
   useEffect(() => {
     if (elRef.current) {
       const game = createGame(elRef.current);
       const canvas = elRef.current.querySelector("canvas");
+      gameRef.current = game;
 
       if (canvas instanceof HTMLCanvasElement) {
         canvasRef.current = canvas;
@@ -34,6 +39,16 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
       return () => game.destroy(true);
     }
   }, [elRef]);
+
+  useEffect(() => {
+    const onResize = () => {       
+      gameRef.current?.scale.refresh();
+      setCanvasW(canvasRef.current?.scrollWidth|| 0)
+     }
+    window.addEventListener('resize', onResize);
+
+    return () => window.removeEventListener('resize', onResize)
+  }, [gameRef])
 
   useEffect(() => {
     EventBus.on(PlinkoEvent.GOAL, (gateIndex: number) => {
@@ -45,7 +60,6 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
   }, []);
 
   useEffect(() => {
-    console.log(prizeCount);
     if (prizeCount === 0) {
       onFinish();
     }
@@ -65,7 +79,7 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
 
   return (
     <>
-      <div className="h-[60vh] relative">
+      <div className="h-[60vh] relative game">
         <div className="w-full h-full" ref={elRef} {...rest} />
 
         <div

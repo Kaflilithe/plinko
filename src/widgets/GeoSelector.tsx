@@ -1,9 +1,4 @@
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -20,23 +15,19 @@ interface Props {
 
 export const GeoSelector: FC<Props> = ({ onSelectGeo }) => {
   return (
-    <Dialog open>
-      <DialogContent>
+    <Dialog open >
+      <DialogContent className='dialog'>
         <DialogHeader>
           <DialogTitle>
-            <header className="text-xl">Select Your Geo</header>
+            <header className="text-4xl text-amber-400">Select Your Geo</header>
           </DialogTitle>
         </DialogHeader>
 
-        <Command className="bg-transparent">
-          <CommandList>
-            {GeoList.map((geo) => (
-              <CommandItem key={geo.country} onSelect={() => onSelectGeo(geo)}>
-                {geo.emoji} {geo.language}
-              </CommandItem>
-            ))}
-          </CommandList>
-        </Command>
+
+        {GeoList.map((geo) => (
+          <Button className='bg-transparent' key={geo.country} onClick={() => onSelectGeo(geo)}>{geo.emoji} {geo.language}</Button>
+        ))}
+
       </DialogContent>
     </Dialog>
   );

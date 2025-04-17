@@ -5,7 +5,7 @@ export const Notification: FC<HTMLAttributes<HTMLElement>> = ({ ...rest }) => {
   const geo = useGeo();
 
   return (
-    <div {...rest} className="w-full flex-1 bg-card p-4 rounded">
+    <div {...rest} className="w-full flex-1 bg-card p-4 rounded notification">
       <img src="" alt="" />
 
       <div>
@@ -15,7 +15,7 @@ export const Notification: FC<HTMLAttributes<HTMLElement>> = ({ ...rest }) => {
         </h2>
 
         <p>
-          Начисление {geo.price} {geo.currency}
+          Replenished on: {geo.price} {geo.currency}
         </p>
       </div>
     </div>
