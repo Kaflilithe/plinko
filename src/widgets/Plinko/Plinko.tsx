@@ -5,6 +5,7 @@ import { EventBus, PlinkoEvent } from "./EventBus";
 import { createGame } from "./PlinkoGame";
 import { useGeo } from "@/core/providers/geo/GeoHooks";
 import { Game } from 'phaser';
+import { Wallet } from '@/components/ui/wallet';
 
 const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
 
@@ -114,10 +115,9 @@ export const Plinko: FC<Props> = ({ onFinish, ...rest }) => {
 
       <div className="flex-1 flex flex-col">
         <div className="flex-1 flex items-center justify-around flex-col">
-          <div className="wallet">
-            {geo.price}
-            {geo.currency}
-          </div>
+        
+          <Wallet newPrice={geo.price} currency={geo.currency}></Wallet>
+          
           <button
             className="w-[140px] h-[140px] rounded-full button-play uppercase"
             disabled={actionCount === 0}
