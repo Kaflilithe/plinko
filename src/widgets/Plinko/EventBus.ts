@@ -1,8 +1,8 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
 export enum PlinkoEvent {
-	KICK_BALL = 'KICK_BALL',
-	GOAL = 'GOAL'
+  KICK_BALL = "KICK_BALL",
+  GOAL = "GOAL",
 }
 
 // Used to emit events between React components and Phaser scenes

@@ -19,7 +19,7 @@ enum WidgetState {
 
 function App() {
   const [geo, setGeo] = useState<GeoState>(GeoList[0]);
-  const [widget, setWidget] = useState<WidgetState>(WidgetState.BANK);
+  const [widget, setWidget] = useState<WidgetState>(WidgetState.GAME);
 
   const nextWidget = () => {
     setWidget((widget) => widget + 1);

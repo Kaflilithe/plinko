@@ -84,7 +84,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
 
   return (
     <>
-      <div className="h-[60vh] relative game">
+      <div className="h-[70vh] relative game">
         <div className="w-full h-full" ref={elRef} {...rest} />
 
         <div
