@@ -192,9 +192,6 @@ button:focus-visible {
     }
 }
 .button-play {
-    background: radial-gradient(#3960d5, #0b1539);
-    border: 1px solid #416df1;
-    color: #ffde09;
     font-size: 28px;
     font-weight: bold;
     padding: 4px;
@@ -202,10 +199,12 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
     transform-origin: center center;
-    transition: 0.8s ease all;
+    transition: 0.3s ease all;
+    outline: none;
 }
-.button-play:active {
-    transform: scale(0.8);
+button:focus,
+button:focus-visible {
+    outline: none;
 }
 .button-play:disabled {
     opacity: 0.5;

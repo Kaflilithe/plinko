@@ -14,6 +14,9 @@ import { useGeo } from "@/core/providers/geo/GeoHooks";
 import { Game } from "phaser";
 import { Wallet } from "@/components/ui/wallet";
 import { Notification } from "../Notification";
+import playButton from "../../assets/play-btn.png";
+import playButtonH from "../../assets/play-btn-h.png";
+import logo from "../../assets/logo.png";
 
 const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
 
@@ -27,6 +30,8 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   const gameRef = useRef<Game>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const geo = useGeo();
+
   const [goals, setGoals] = useState(new Set<number>());
   const [canvasW, setCanvasW] = useState(0);
   const [gatesPos, setGatesPos] = useState(0);
@@ -34,9 +39,10 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   const [actionCount, setActionCount] = useState(5);
   const [prizeCount, setPrizeCount] = useState(5);
 
-  const finished = useMemo(() => prizeCount === 0, [prizeCount]);
+  const [buttonBg, setButtonBg] = useState(playButton);
+  const [price, setPrice] = useState(geo.price);
 
-  const geo = useGeo();
+  const finished = useMemo(() => prizeCount === 0, [prizeCount]);
 
   useEffect(() => {
     if (elRef.current) {
@@ -59,11 +65,14 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   useEffect(() => {
     const onResize = () => {
       queueMicrotask(() => {
-        gameRef.current?.scale.refresh();
-        setCanvasW(canvasRef.current?.scrollWidth || 0);
-        const rect = canvasRef.current?.getBoundingClientRect();
-        const bottomY = rect?.bottom;
-        setGatesPos(bottomY || 0);
+        setTimeout(() => {
+          gameRef.current?.scale.refresh();
+
+          setCanvasW(canvasRef.current?.scrollWidth || 0);
+          const rect = canvasRef.current?.getBoundingClientRect();
+          const bottomY = rect?.bottom;
+          setGatesPos(bottomY || 0);
+        }, 10);
       });
     };
     window.addEventListener("resize", onResize);
@@ -90,11 +99,20 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   const kickBall = () => {
     EventBus.emit(PlinkoEvent.KICK_BALL);
     setActionCount((count) => count - 1);
+    setButtonBg(playButtonH);
+    setTimeout(() => {
+      setButtonBg(playButton);
+    }, 60);
+
+    // Уменьшаем выигрышь на 20%
+    setPrice((price) => {
+      return Math.floor(price - geo.price * 0.2);
+    });
   };
 
   return (
     <>
-      <div className="h-[50vh] relative game">
+      <div className="h-[60vh] relative game">
         <div className="w-full h-full" ref={elRef} {...rest} />
 
         <div
@@ -105,7 +123,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
             height: "max-content",
             transform: "translateX(-50%) translateY(-100%)",
           }}
-          className="absolute w-full grid grid-cols-10 gap-0.5 bottom-2 z-50 px-1"
+          className="absolute w-full grid grid-cols-10 gap-0.5 bottom-2 z-50 px-1 py-2"
         >
           {gates.map((gate, index) => (
             <div
@@ -129,22 +147,34 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col gap-2 pb-8">
         <div className="flex-1 flex items-center justify-around flex-col">
-          <Wallet newPrice={geo.price} currency={geo.currency}></Wallet>
+          <div className="max-w-[200px]">
+            <img src={logo} alt="" />
+          </div>
 
           <button
-            className="w-[140px] h-[140px] rounded-full button-play uppercase"
+            className="relative scale-120 w-[140px] h-[140px] button-play transition-all active:scale-110 text-amber-500 active:text-amber-600 hover:scale-110"
             disabled={actionCount === 0}
             onClick={kickBall}
           >
-            <span className="flex flex-col items-center">
-              <div className="inline-flex items-center">{geo.play}</div>
-              <div className="inline-flex items-center text-2xl font-bold">
+            <img
+              src={buttonBg}
+              className="w-full absolute left-3 top-2"
+              alt=""
+            />
+
+            <span className="relative flex flex-col items-center z-10">
+              <div className="inline-flex items-center text-2xl font-bold pt-4">
+                PLAY
+              </div>
+              <div className="inline-flex leading-4 items-center text-2xl font-bold">
                 {actionCount}
               </div>
             </span>
           </button>
+
+          <Wallet price={price} currency={geo.currency}></Wallet>
         </div>
       </div>
 

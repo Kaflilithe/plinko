@@ -1,29 +1,37 @@
-import { HTMLAttributes } from 'react';
+import anime from "animejs";
+import { HTMLAttributes, useEffect, useRef, useState } from "react";
+
+function usePrevious<T>(value: T): T | null {
+  const ref = useRef<T>(null);
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-	newPrice: number,
-	currency: string,
-
+  price: number;
+  currency: string;
 }
 
-export function Wallet({ newPrice, currency }:Props) {
+export function Wallet({ price, currency }: Props) {
+  const prevPrice = usePrevious(price);
 
-function animaWallet(){
-	anime({
-		targets: '.sum',
-		value: [0, newPrice],
-		round: 1,
-		easing: 'easeInOutExpo'
-	});
-}
-return(
-	<div className="wallet">
-		<span className='sum'>{newPrice}</span>
-		{currency}
-	</div>
-)
-}
+  useEffect(() => {
+    if (prevPrice !== price) {
+      anime({
+        targets: ".sum",
+        innerHTML: [prevPrice ?? 0, price],
+        round: 1,
+        easing: "easeInOutExpo",
+      });
+    }
+  }, [price, prevPrice]);
 
-function anime(arg0: { targets: string; value: number[]; round: number; easing: string; }) {
-	throw new Error('Function not implemented.');
+  return (
+    <div className="wallet">
+      <span id="wallet-value" className="sum" />
+      {currency}
+    </div>
+  );
 }

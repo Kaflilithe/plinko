@@ -11,7 +11,7 @@ import pinLight from "../../assets/pin-light.png";
 import ball from "../../assets/ball.png";
 
 const GAME_WIDTH = 400;
-const GAME_HEIGHT = 600;
+const GAME_HEIGHT = 500;
 const PEG_ROWS = 12;
 const PEG_SPACING_X = 27;
 const PEG_SPACING_Y = 35;
@@ -49,7 +49,7 @@ class PlinkoScene extends Phaser.Scene {
           GAME_WIDTH / 2 -
           ((pegsInRow - 1) * PEG_SPACING_X) / 2 +
           col * PEG_SPACING_X;
-        const y = 140 + row * PEG_SPACING_Y;
+        const y = 50 + row * PEG_SPACING_Y;
 
         const peg = this.add.sprite(x, y, "pin");
         const pegBody = this.matter.bodies.circle(x, y, PEG_RADIUS, {
