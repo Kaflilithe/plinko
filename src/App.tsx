@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GeoList } from "./core/providers/geo/GeoList";
 import { PlinkoGame } from "./widgets/Plinko/Plinko";
-import { GeoSelector } from "./widgets/GeoSelector";
+
 import { GeoState } from "./core/providers/geo/GeoContext";
 import { GeoProvider } from "./core/providers/geo/GeoProvider";
 import { FinalBank } from "./widgets/FinalBank";
@@ -18,21 +18,19 @@ enum WidgetState {
 
 function App() {
   const [geo, setGeo] = useState<GeoState>(GeoList[0]);
-  const [widget, setWidget] = useState<WidgetState>(WidgetState.GEO);
+  const [widget, setWidget] = useState<WidgetState>(WidgetState.LOAD);
 
   const nextWidget = () => {
     setWidget((widget) => widget + 1);
   };
-
-  const selectGeo = (geo: GeoState) => {
-    setGeo(geo);
-    nextWidget();
-  };
+  useEffect(() => {
+    setGeo(GeoList[6])
+  }, []);
 
   return (
     <GeoProvider geo={geo}>
       <main className="h-screen flex flex-col bg-gradient">
-        {widget === WidgetState.GEO && <GeoSelector onSelectGeo={selectGeo} />}
+        {/* {widget === WidgetState.GEO && <GeoSelector onSelectGeo={selectGeo} />} */}
         {widget === WidgetState.LOAD && <Preloader onFinish={nextWidget} />}
         {widget === WidgetState.GAME && <PlinkoGame onFinish={nextWidget} />}
         {widget === WidgetState.BANK && <FinalBank />}

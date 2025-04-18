@@ -1,16 +1,10 @@
 "use client";
 
-import * as React from "react";
-import { Minus, Plus } from "lucide-react";
 import logoBank from "../assets/logo_bank.png";
-import { Button } from "@/components/ui/button";
+
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { useGeo } from '@/core/providers/geo/GeoHooks';
@@ -25,7 +19,13 @@ export function FinalBank() {
     const minutes = now.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
-
+  function integration (){
+    //@ts-ignore
+  window.FBPlayableOnCTAClick = () => {
+    //@ts-ignore
+    (typeof FbPlayableAd === "undefined") ? alert('FBPlayableAd.onCTAClick') : FbPlayableAd.onCTAClick()
+  }
+}
   const geo = useGeo();
 
   useEffect(() => {
@@ -44,7 +44,8 @@ export function FinalBank() {
     <Drawer open shouldScaleBackground>
       <DrawerContent className='drawer-content'>
         <DrawerTitle></DrawerTitle>
-        <div className="mx-auto  h-[100vh] max-w-[400px] w-[100%]" onClick={()=>{console.log('click');
+        <div className="mx-auto  h-[100vh] max-w-[400px] w-[100%]" onClick={() => {
+          integration()
         }}>
           <div className="fixed inset-0 bg-gradient-to-br from-indigo-700 to-indigo-900 text-white z-50 animate-slide-up flex flex-col">
             {/* Header */}
@@ -217,7 +218,7 @@ export function FinalBank() {
               <div className="mx-4 mb-4 bg-gray-800/50 rounded-xl overflow-auto">
                 <div className="p-4 flex items-center parting">
                   <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center mr-3 parting-logo">
-                    <img  src={logoBank} alt="" />
+                    <img src={logoBank} alt="" />
                   </div>
                   <div className="flex-1">
                     <div className="font-medium parting-name">Plinko App</div>

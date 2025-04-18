@@ -1,14 +1,14 @@
 import Phaser from "phaser";
 import { EventBus, PlinkoEvent } from "./EventBus";
 // Audio
-import bgAudio from "../../assets/bg.ogg";
 import ballKick from "../../assets/ballKick.ogg";
-import cell from "../../assets/cell.ogg";
+import bgAudio from "../../assets/bg.ogg";
 import buttonClick from "../../assets/buttonClick.ogg";
+import cell from "../../assets/cell.ogg";
 // Sprites
-import pin from "../../assets/pin.png";
-import pinLight from "../../assets/pin-light.png";
 import ball from "../../assets/ball.png";
+import pinLight from "../../assets/pin-light.png";
+import pin from "../../assets/pin.png";
 import off from "../../assets/snd-off.png";
 import on from "../../assets/snd-on.png";
 
@@ -54,10 +54,10 @@ class PlinkoScene extends Phaser.Scene {
 
   preload() {
     // Audio
-    this.load.audio("bgAudio", bgAudio);
-    this.load.audio("ballKick", ballKick);
-    this.load.audio("cell", cell);
-    this.load.audio("buttonClick", buttonClick);
+    this.load.audio("bgAudio", decodeBase64ToAudioUrl(bgAudio));
+    this.load.audio("ballKick", decodeBase64ToAudioUrl(ballKick));
+    this.load.audio("cell", decodeBase64ToAudioUrl(cell));
+    this.load.audio("buttonClick", decodeBase64ToAudioUrl(buttonClick));
     // Sprite
     this.load.image("pin", pin);
     this.load.image("pinLight", pinLight);
@@ -257,4 +257,18 @@ function checkCollision(event, label1, label2, callback) {
       callback(body1, body2);
     }
   });
+}
+
+function decodeBase64ToAudioUrl(base64) {
+  const arr = base64.split(',');
+  const mime = arr[0].match(/:(.*?);/)?.[1];
+  const bstr = atob(arr[arr.length - 1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return URL.createObjectURL(
+    new File([u8arr], Date.now().toString(), { type: mime })
+  );
 }

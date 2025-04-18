@@ -1,5 +1,5 @@
 import anime from "animejs";
-import { HTMLAttributes, useEffect, useRef, useState } from "react";
+import { HTMLAttributes, useEffect, useRef } from "react";
 
 function usePrevious<T>(value: T): T | null {
   const ref = useRef<T>(null);

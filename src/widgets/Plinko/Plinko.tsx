@@ -196,7 +196,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
           </div>
 
           <button
-            className="relative scale-120 w-[140px] h-[140px] button-play transition-all active:scale-110 text-amber-500 active:text-amber-600 hover:scale-110"
+            className="relative scale-120 w-[140px] h-[140px] button-play transition-all active:scale-110 text-amber-500 active:text-amber-600 hover:scale-110 bg-transparent"
             disabled={disabled || actionCount === 0}
             onClick={kickBall}
           >
