@@ -19,8 +19,8 @@ import playButtonH from "../../assets/play-btn-h.png";
 import logo from "../../assets/logo.png";
 import hand from "../../assets/hand.png";
 import anime from "animejs";
-
-const gates = [100, 30, 20, 10, 2, 2, 10, 20, 30, 100];
+import bigWin from "../../assets/big_win.svg";
+const gates = [100, 50, 30, 20, 10, 10, 20, 30, 50, 100];
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   // Юзер получил приз
@@ -44,6 +44,8 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
   const [buttonBg, setButtonBg] = useState(playButton);
   const [price, setPrice] = useState(geo.price);
   const [disabled, setDisabled] = useState(false);
+  const [winnings, setWinnings] = useState(true);
+  
 
   const finished = useMemo(() => prizeCount === 0, [prizeCount]);
 
@@ -95,7 +97,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
         direction: "alternate",
       });
     }, 10);
-  }, [finished]);
+  }, [finished && winnings]);
 
   useEffect(() => {
     EventBus.on(PlinkoEvent.GOAL, (gateIndex: number) => {
@@ -105,6 +107,20 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
       setPrizeCount((count) => count - 1);
     });
   }, []);
+
+  useEffect(() => {
+    if (prizeCount <= 4) {
+      setPrice(geo.winnings / (prizeCount + 1))
+    }
+
+
+  }, [prizeCount])
+  useEffect(() => {
+    if (finished){
+      setTimeout(() => setWinnings(false), 2000)
+    }
+ 
+  }, [finished]);
 
   const removeGoal = (gate: number) => {
     setGoals((set) => {
@@ -124,7 +140,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
     setDisabled(true);
     setTimeout(() => {
       setDisabled(false);
-    }, 1000);
+    }, 300);
 
     // Уменьшаем выигрышь на 20%
     setPrice((price) => {
@@ -155,10 +171,10 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
                 {
                   "bounce-hit": goals.has(index),
                   "bg-red-600": gate === 100,
-                  "bg-orange-500": gate === 30,
-                  "bg-amber-300": gate === 20,
-                  "bg-yellow-300": gate === 10,
-                  "bg-lime-300": gate === 2,
+                  "bg-orange-500": gate === 50,
+                  "bg-amber-300": gate === 30,
+                  "bg-yellow-300": gate === 20,
+                  "bg-lime-300": gate === 10,
                 },
               )}
               onAnimationEnd={() => removeGoal(index)}
@@ -175,7 +191,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
         })}
       >
         <div className="flex-1 flex items-center justify-around flex-col">
-          <div className="max-w-[200px]">
+          <div className="max-w-[200px] logo">
             <img src={logo} alt="" />
           </div>
 
@@ -203,14 +219,15 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
           <Wallet price={price} currency={geo.currency}></Wallet>
         </div>
       </div>
-
-      {finished && (
+      {finished && (<div className='absolute flex flex-col items-center  top-[50%] left-[50%] translate-[-50%] max-w-[700px] w-[100%] trigger'><img className='max-w-[700px] w-[100%]' src={bigWin} alt="" /></div>)}
+      {finished && !winnings && (
         <div className="absolute top-[140px] left-[50%] translateX-[-50%]">
           <img className="finish-pointer" src={hand} alt="" />
+    
         </div>
       )}
 
-      {finished && <Notification onFinish={onFinish} />}
+      {finished && !winnings && <Notification onFinish={onFinish} />}
     </>
   );
 };

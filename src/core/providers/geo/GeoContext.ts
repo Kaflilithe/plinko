@@ -6,6 +6,8 @@ export interface GeoState {
   emoji: string;
   language: string;
   price: number;
+  bank: string;
+  currencyName: string;
   winnings: number;
   currency: string;
   logo: string;

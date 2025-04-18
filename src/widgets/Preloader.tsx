@@ -9,7 +9,7 @@ interface Props {
   onFinish: () => void;
 }
 
-export const Preloader: FC<Props> = ({ interval = 2000, onFinish }) => {
+export const Preloader: FC<Props> = ({ interval = 1000, onFinish }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -28,17 +28,17 @@ export const Preloader: FC<Props> = ({ interval = 2000, onFinish }) => {
   return (
     <div className="fixed flex top-0 w-full min-h-screen z-[99999] bg-gradient p-4">
       <div className="relative flex-1 flex items-center justify-center flex-col gap-4">
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 ">
           <img src={logo} alt="" />
 
           <Progress max={100} value={progress} />
         </div>
 
-        <div className="absolute -bottom-10 opacity-50">
+        <div className="absolute -bottom-10 opacity-50 pattern">
           <img src={flowers} alt="" />
         </div>
 
-        <div className="absolute -top-10 opacity-50">
+        <div className="absolute -top-10 opacity-50 pattern">
           <img className="rotate-180" src={flowers} alt="" />
         </div>
       </div>

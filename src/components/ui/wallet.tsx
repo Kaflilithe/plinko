@@ -21,7 +21,7 @@ export function Wallet({ price, currency }: Props) {
     if (prevPrice !== price) {
       anime({
         targets: ".sum",
-        innerHTML: [prevPrice ?? 0, price],
+        innerHTML: [prevPrice ?? 0, price >= 0 ? price : 0],
         round: 1,
         easing: "easeInOutExpo",
       });

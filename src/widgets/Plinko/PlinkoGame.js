@@ -9,6 +9,8 @@ import buttonClick from "../../assets/buttonClick.ogg";
 import pin from "../../assets/pin.png";
 import pinLight from "../../assets/pin-light.png";
 import ball from "../../assets/ball.png";
+import off from "../../assets/snd-off.png";
+import on from "../../assets/snd-on.png";
 
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 500;
@@ -36,11 +38,11 @@ const Balls = {
 // Сопоставление мячика по индексу
 // с воротами, куда он упадет в конце
 const BallToGate = {
-  [Balls.BALL_1]: 2,
-  [Balls.BALL_2]: 9,
-  [Balls.BALL_3]: 4,
-  [Balls.BALL_4]: 6,
-  [Balls.BALL_5]: 7,
+  [Balls.BALL_1]: 3,
+  [Balls.BALL_2]: 1,
+  [Balls.BALL_3]: 8,
+  [Balls.BALL_4]: 2,
+  [Balls.BALL_5]: 9,
 };
 
 class PlinkoScene extends Phaser.Scene {
@@ -60,6 +62,8 @@ class PlinkoScene extends Phaser.Scene {
     this.load.image("pin", pin);
     this.load.image("pinLight", pinLight);
     this.load.image("ball", ball);
+    this.load.image("off", off);
+    this.load.image("on", on)
   }
 
   create() {
@@ -128,6 +132,16 @@ class PlinkoScene extends Phaser.Scene {
     });
 
     this.checkCollision();
+    this.isMuted = false;
+    this.soundButton = this.add.image(GAME_WIDTH - 20, 20, "on")
+      .setOrigin(1, 0)
+      .setScale(0.5)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => {
+        this.isMuted = !this.isMuted;
+        this.sound.mute = this.isMuted;
+        this.soundButton.setTexture(this.isMuted ? "off" : "on");
+      });
   }
 
   spawnBall(x = GAME_WIDTH / 2, y = 20) {

@@ -33,18 +33,19 @@ const Template: FC<HTMLAttributes<HTMLDivElement>> = ({ ...rest }) => {
   return (
     <div
       {...rest}
-      className="w-full flex-1 bg-card p-4 rounded notification select-none"
+      className="w-full flex gap-[8px] items-center flex-1 bg-card p-4 rounded notification select-none"
     >
-      <img src="" alt="" />
+      <img src={geo.logo} className='max-w-[55px] rounded-md' alt="" />
 
-      <div>
+      <div className='flex-1'>
         <h2 className="flex items-center justify-between">
-          <span>Revoult Bank</span>
+          <span className='text-[20px]'>{geo.bank}</span>
           <small>now</small>
         </h2>
 
-        <p>
-          Replenished on: {geo.price} {geo.currency}
+        <p className='text-[14px]'>
+          <span className='mb-[3px] block'>Replenished on: <span>{geo.winnings} {geo.currency}</span></span>
+          <span>Balance: <span>{geo.winnings}.58 {geo.currency}</span></span>
         </p>
       </div>
     </div>

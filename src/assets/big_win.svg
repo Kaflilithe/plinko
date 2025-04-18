@@ -1,0 +1,74 @@
+
+<svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Свечение -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <style>
+      .text {
+        font-family: 'Arial Black', sans-serif;
+        font-size: 60px;
+        fill: gold;
+        filter: url(#glow);
+      }
+
+      .anim {
+        opacity: 0;
+        transform: translateY(100px);
+        animation: popUp 0.6s ease-out forwards;
+      }
+
+      /* Задержки для каждой буквы */
+      .delay1 { animation-delay: 0s; }
+      .delay2 { animation-delay: 0.1s; }
+      .delay3 { animation-delay: 0.2s; }
+      .delay4 { animation-delay: 0.3s; }
+      .delay5 { animation-delay: 0.4s; }
+      .delay6 { animation-delay: 0.5s; }
+
+      @keyframes popUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .sparkle {
+        animation: sparkleAnim 1s infinite ease-in-out alternate;
+      }
+
+      @keyframes sparkleAnim {
+        0%   { fill: gold; }
+        50%  { fill: #ffffcc; }
+        100% { fill: gold; }
+      }
+    </style>
+  </defs>
+
+  <g class="text" transform="translate(160, 100)">
+    <g transform="translate(0, 0)">
+      <g class="anim delay1"><text class="sparkle">B</text></g>
+    </g>
+    <g transform="translate(48, 0)">
+      <g class="anim delay2"><text class="sparkle">I</text></g>
+    </g>
+    <g transform="translate(78, 0)">
+      <g class="anim delay3"><text class="sparkle">G</text></g>
+    </g>
+    <g transform="translate(140, 0)">
+      <g class="anim delay4"><text class="sparkle">W</text></g>
+    </g>
+    <g transform="translate(208, 0)">
+      <g class="anim delay5"><text class="sparkle">I</text></g>
+    </g>
+    <g transform="translate(238, 0)">
+      <g class="anim delay6"><text class="sparkle">N</text></g>
+    </g>
+  </g>
+</svg>
