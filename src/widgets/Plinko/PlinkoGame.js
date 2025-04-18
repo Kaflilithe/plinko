@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 import { EventBus, PlinkoEvent } from "./EventBus";
 // Audio
-import ballKick from "../../assets/ballKick.ogg";
-import bgAudio from "../../assets/bg.ogg";
-import buttonClick from "../../assets/buttonClick.ogg";
-import cell from "../../assets/cell.ogg";
+import ballKick from "../../assets/ballKick.mp3?base64";
+import bgAudio from "../../assets/bg.mp3?base64";
+import buttonClick from "../../assets/buttonClick.mp3?base64";
+import cell from "../../assets/cell.mp3?base64";
 // Sprites
 import ball from "../../assets/ball.png";
 import pinLight from "../../assets/pin-light.png";
@@ -45,6 +45,8 @@ const BallToGate = {
   [Balls.BALL_5]: 9,
 };
 
+
+
 class PlinkoScene extends Phaser.Scene {
   constructor() {
     super("plinko");
@@ -53,17 +55,33 @@ class PlinkoScene extends Phaser.Scene {
   ballIndex = 0;
 
   preload() {
+    console.log(ballKick);
+    
     // Audio
-    this.load.audio("bgAudio", decodeBase64ToAudioUrl(bgAudio));
-    this.load.audio("ballKick", decodeBase64ToAudioUrl(ballKick));
-    this.load.audio("cell", decodeBase64ToAudioUrl(cell));
-    this.load.audio("buttonClick", decodeBase64ToAudioUrl(buttonClick));
+    this.load.audio("bgAudio", this.decodeBase64ToAudioUrl(bgAudio));
+    this.load.audio("ballKick", this.decodeBase64ToAudioUrl(ballKick));
+    this.load.audio("cell", this.decodeBase64ToAudioUrl(cell));
+    this.load.audio("buttonClick", this.decodeBase64ToAudioUrl(buttonClick));
     // Sprite
     this.load.image("pin", pin);
     this.load.image("pinLight", pinLight);
     this.load.image("ball", ball);
     this.load.image("off", off);
     this.load.image("on", on)
+  }
+
+  decodeBase64ToAudioUrl(base64) {
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1];
+    const bstr = atob(arr[arr.length - 1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return URL.createObjectURL(
+      new File([u8arr], Date.now().toString(), { type: mime })
+    );
   }
 
   create() {
@@ -259,16 +277,3 @@ function checkCollision(event, label1, label2, callback) {
   });
 }
 
-function decodeBase64ToAudioUrl(base64) {
-  const arr = base64.split(',');
-  const mime = arr[0].match(/:(.*?);/)?.[1];
-  const bstr = atob(arr[arr.length - 1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return URL.createObjectURL(
-    new File([u8arr], Date.now().toString(), { type: mime })
-  );
-}

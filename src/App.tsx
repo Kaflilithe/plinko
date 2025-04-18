@@ -24,7 +24,8 @@ function App() {
     setWidget((widget) => widget + 1);
   };
   useEffect(() => {
-    setGeo(GeoList[6])
+    const geo = document.documentElement.dataset.geo;
+    setGeo(GeoList[Number(geo) ?? 0])
   }, []);
 
   return (

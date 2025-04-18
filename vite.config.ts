@@ -2,12 +2,13 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
+import { viteSingleFile } from 'vite-plugin-singlefile';
 import tsconfigPaths from "vite-tsconfig-paths";
-import { viteSingleFile } from 'vite-plugin-singlefile'
-// import singleFile from 'vite-plugin-singlefile';
+import {base64} from "vite-plugin-base64";
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tsconfigPaths(), viteSingleFile()],
+  plugins: [react(), tailwindcss(), tsconfigPaths(), viteSingleFile(), base64()],
 
   resolve: {
     alias: {

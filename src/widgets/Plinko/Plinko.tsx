@@ -158,7 +158,7 @@ export const PlinkoGame: FC<Props> = ({ onFinish, ...rest }) => {
             width: `${canvasW}px`,
             top: `${gatesPos}px`,
             left: "50%",
-            height: "max-content",
+            height: "40px",
             transform: "translateX(-50%) translateY(-100%)",
           }}
           className="absolute w-full grid grid-cols-10 gap-0.5 bottom-2 z-50 px-1 py-2"
